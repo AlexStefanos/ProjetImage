@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as matimg
 
-img = matimg.imread("1.jpeg")
+img = matimg.imread("DecoupageDonnees/Traitement/24.jpg")
 plt.figure()
 plt.imshow(img)
 plt.show()

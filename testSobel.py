@@ -3,7 +3,7 @@ import cv2
 import matplotlib.image as mplimp
 import matplotlib.pyplot as plt
 
-img = mplimp.imread("Piece2.jpeg")
+img = mplimp.imread("DecoupageDonnees/Traitement/24.jpg")
 # plt.figure()
 # plt.imshow(img)
 # plt.show()

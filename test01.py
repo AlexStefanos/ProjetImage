@@ -3,7 +3,7 @@ import cv2
 import matplotlib.image as mplimp
 import matplotlib.pyplot as plt
 
-img = cv2.imread('Piece1.jpeg', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('DecoupageDonnees/Traitement/24.jpg', cv2.IMREAD_GRAYSCALE)
 #img = (mplimp.imread('/users/licence/il06110/landscape.png') * 255 ). astype(np.uint8)
 # plt.figure()
 # plt.imshow(img, cmap=plt.cm.gray, vmin=0, vmax=255)
