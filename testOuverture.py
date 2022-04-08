@@ -3,18 +3,6 @@ import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mplimp
 
-img = mplimp.imread('DecoupageDonnees/Traitement/24.jpg')
-for i in range (img.shape[0]):
-	for j in range (img.shape[1]):
-		if img[i,j,0] > 0 or img[i,j,1] > 0 or img[i,j,2] > 0 :
-			img[i,j,0] = 255
-			img[i,j,1] = 255
-			img[i,j,2] = 255
-
-plt.figure()
-plt.imshow(img)
-plt.show()
-
 diameter = 11
 circle = np.zeros((diameter, diameter))
 center = ((circle.shape[0]//2,circle.shape[1]//2))
@@ -51,7 +39,7 @@ def erode (image_bin, structuring_element, center):
 				if (i + i2 < 0) or (i + i2 > image_bin.shape[0] - 1):
 					continue
 
-				for j2 in range(-center[1], structuring_element[1] - center[0] - 1):
+				for j2 in range(-center[1], structuring_element[1] - center[1] - 1):
 					if (j + j2 < 0) or (j + j2 > image_bin.shape[1] - 1) or structuring_element.shape[center[0] + i2, center[1] + j2] == 0:
 						continue
 
