@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import argparse
 import os, sys
 
-path = "/home/alexandre/ProjetImage/DecoupageDonnees/Traitement/"
+path = "DecoupageDonnees/Traitement/"
 dirs = os.listdir(path)
 for file in dirs:
 	if file.endswith(".jpeg"):
