@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.image as mpimg
 
-img0 = cv2.imread('DecoupageDonnees/Traitement/24.jpg', 0) 
+img0 = cv2.imread('DecoupageDonnees/Traitement/6.jpg', 0) 
 img = cv2.medianBlur(img0, 65)
 
 
@@ -46,7 +46,7 @@ print(b)
 
 
 
-imgColors = (mpimg.imread('/users/licence/il09359/Documents/TD_Image/ProjetTI/ProjetTI_traitement/24.jpg'))
+imgColors = cv2.imread('DecoupageDonnees/Traitement/6.jpg', 0) 
 r = imgColors[a,b,0] * 1.0
 g = imgColors[a,b,1] * 1.0
 b = imgColors[a,b,2] * 1.0
