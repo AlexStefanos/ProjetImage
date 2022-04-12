@@ -247,14 +247,69 @@ for file in dirs:
 		g = imgColors[moy_x,moy_y,1] * 1.0
 		b = imgColors[moy_x,moy_y,2] * 1.0
 		print(r,"and",g,"and",b)
-		print("ROUGE :")
-		
+
+		xResolution = 0
+		yResolution = 0
+		xFond = 0
+		yFond = 0
+		redXMoyFond = 0
+		greenXMoyFond = 0
+		blueXMoyFond = 0
+		redYMoyFond = 0
+		greenYMoyFond = 0
+		blueYMoyFond = 0
+		for i in range(imgColors.shape[0]):
+			xResolution += 1
+		for i in range(imgColors.shape[1]):
+			yResolution += 1
+		xFond = xResolution // 100
+		yFond = yResolution // 100
+		for i in range(xFond, (imgColors.shape[0] - xFond)):
+			redXMoyFond += imgColors[i, yFond, 0]
+			greenXMoyFond += imgColors[i, yFond, 1]
+			blueXMoyFond += imgColors[i, yFond, 2]
+		for j in range(yFond, (imgColors.shape[1] - yFond)):
+			redYMoyFond += imgColors[xFond, j, 0]
+			greenYMoyFond += imgColors[xFond, j, 1]
+			blueYMoyFond += imgColors[xFond, j, 2]
+		redXMoyFond = redXMoyFond // xResolution
+		greenXMoyFond = greenXMoyFond // xResolution
+		blueXMoyFond = blueXMoyFond // xResolution
+		redYMoyFond = redYMoyFond // yResolution
+		greenYMoyFond = greenYMoyFond // yResolution
+		blueYMoyFond = blueYMoyFond // yResolution
+		print("redXMoyFond : ", redXMoyFond)
+		print("greenXMoyFond : ", greenXMoyFond)
+		print("blueXMoyFond : ", blueXMoyFond)
+		print("redYMoyFond : ", redYMoyFond)
+		print("greenYMoyFond : ", greenYMoyFond)
+		print("blueYMoyFond : ", blueYMoyFond)
+
 		histRed = [0] * 256
 		histGreen = [0] * 256
 		histBlue = [0] * 256
+
 		for i in range(imgN.shape[0]):
 			for j in range(imgN.shape[1]):
-				if imgN[i,j,0] > 245:
+				if imgColors[i, j, 0] >= (redXMoyFond - 10) and imgColors[i, j, 0] <= (redXMoyFond + 10):
+					abs_sobel64f[i, j, 0] = 0
+				if imgColors[i, j, 0] >= (greenXMoyFond - 10) and imgColors[i, j, 0] <= (greenXMoyFond + 10):
+					abs_sobel64f[i, j, 0] = 0
+				if imgColors[i, j, 0] >= (blueXMoyFond - 10) and imgColors[i, j, 0] <= (blueXMoyFond + 10):
+					abs_sobel64f[i, j, 0] = 0
+				if imgColors[i, j, 0] >= (redYMoyFond - 10) and imgColors[i, j, 0] <= (redYMoyFond + 10):
+					abs_sobel64f[i, j, 0] = 0
+				if imgColors[i, j, 0] >= (greenYMoyFond - 10) and imgColors[i, j, 0] <= (greenYMoyFond + 10):
+					abs_sobel64f[i, j, 0] = 0
+				if imgColors[i, j, 0] >= (blueYMoyFond - 10) and imgColors[i, j, 0] <= (blueYMoyFond + 10):
+					abs_sobel64f[i, j, 0] = 0
+		plt.figure()
+		plt.imshow(imgN)
+		plt.show()
+		print("ROUGE :")
+		for i in range(imgN.shape[0]):
+			for j in range(imgN.shape[1]):
+				if abs_sobel64f[i,j,0] == 1:
 					histRed[imgColors[i,j,0]] += 1
 		for i, val in enumerate(histRed):
 			print(f"{i}: {val}")
@@ -262,7 +317,7 @@ for file in dirs:
 		print("VERT :")
 		for i in range(imgN.shape[0]):
 			for j in range(imgN.shape[1]):
-				if imgN[i,j,1] > 245:
+				if abs_sobel64f[i,j,1] == 1:
 					histGreen[imgColors[i,j,1]] += 1
 		for i, val in enumerate(histGreen):
 			print(f"{i}: {val}")
@@ -270,7 +325,7 @@ for file in dirs:
 		print("BLEU :")
 		for i in range(imgN.shape[0]):
 			for j in range(imgN.shape[1]):
-				if imgN[i,j,2] > 245:	
+				if abs_sobel64f[i,j,2] == 1:	
 					histBlue[imgColors[i,j,2]] += 1
 		for i, val in enumerate(histBlue):
 			print(f"{i}: {val}")
