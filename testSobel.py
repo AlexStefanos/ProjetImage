@@ -2,8 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.image as mplimp
 import matplotlib.pyplot as plt
-import argparse
-import os, sys
+import os
 
 path = "DecoupageDonnees/Traitement/"
 dirs = os.listdir(path)
@@ -18,20 +17,20 @@ for file in dirs:
 			for j in range(circle.shape[1]):
 				if np.sqrt((center[0] - i)**2 + (center[1] - j)**2) <= diameter // 2:
 					circle[i, j] = 1
-		# plt.figure()
-		# plt.title("Elem struct")
-		# plt.imshow(circle)
+
 		img0 = mplimp.imread(path + file)
-		imgColors = mplimp.imread(path + file)
-		imgOpening = cv2.morphologyEx(img0, cv2.MORPH_OPEN, circle)
+		img1 = mplimp.imread(path + file)
+		imgBlurred = cv2.blur(img1,(17,17))
+
 		plt.figure()
-		plt.imshow(imgOpening)
+		plt.imshow(imgBlurred)
 		plt.show()
+		imgOpening = cv2.morphologyEx(img0, cv2.MORPH_OPEN, center)
 
 		sobelx64f = cv2.Sobel(imgOpening,cv2.CV_64F,1,0,ksize=5)
 		abs_sobel64f = np.absolute(sobelx64f)
-		sobel_8u = np.uint8(abs_sobel64f)
 
+				
 		imgN = np.zeros(abs_sobel64f.shape)
 		for i in range(abs_sobel64f.shape[0]) :
 			for j in range(abs_sobel64f.shape[1]) :
@@ -41,10 +40,13 @@ for file in dirs:
 					imgN[i,j,1] = 255
 				if abs_sobel64f[i,j,2] > 120:
 					imgN[i,j,2] = 255
+		# plt.figure()
+		# plt.imshow(imgN)
+		# plt.show()
 
 		x = 0
 		y = 0
-		c = 0
+		c = 1
 		for i in range(imgN.shape[0]) :
 			for j in range(imgN.shape[1]) :
 				if imgN[i,j,0] == 255:
@@ -65,37 +67,68 @@ for file in dirs:
 		print(moy_x)
 		print(moy_y)
 
-		r = imgColors[moy_x,moy_y,0] * 1.0
-		g = imgColors[moy_x,moy_y,1] * 1.0
-		b = imgColors[moy_x,moy_y,2] * 1.0
-		print(r,"and",g,"and",b)
-		print("ROUGE :")
-		
+		imgCarre = np.zeros((imgBlurred.shape[0]//25, imgBlurred.shape[1]//25), dtype = np.uint8)
+		imgCarre[imgCarre.shape[0]//2,imgCarre.shape[1]//2] = 255
+		imgCarre = imgBlurred[(moy_x - imgCarre.shape[0]):(moy_x + imgCarre.shape[0]),(moy_y - imgCarre.shape[1]):(moy_y + imgCarre.shape[1])]
+		plt.figure()
+		plt.imshow(imgCarre)
+		plt.show()
+
+		# r = imgCarre[moy_x,moy_y,0] * 1.0
+		# g = imgBlurred[moy_x,moy_y,1] * 1.0
+		# b = imgBlurred[moy_x,moy_y,2] * 1.0
+		# print(r,"and",g,"and",b)
+
 		histRed = [0] * 256
 		histGreen = [0] * 256
 		histBlue = [0] * 256
-		for i in range(imgColors.shape[0]):
-			for j in range(imgColors.shape[1]):
-				histRed[imgColors[i,j,0]] += 1
-		for i, val in enumerate(histRed):
-			print(f"{i}: {val}")
+
+		print("ROUGE :")
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
+				if abs_sobel64f[i,j,0] == 1:
+					histRed[imgCarre[i,j,0]] += 1
+#print(histRed)
+		maxRed = 0
+		iRed = 0
+		for i in range(253):
+			if(histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3] > maxRed):
+				maxRed = histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3]
+				iRed = i
+			print(histRed[i])
+		print(maxRed, iRed)
+
 
 		print("VERT :")
-		for i in range(imgColors.shape[0]):
-			for j in range(imgColors.shape[1]):
-				histGreen[imgColors[i,j,1]] += 1
-		for i, val in enumerate(histGreen):
-			print(f"{i}: {val}")
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
+				if abs_sobel64f[i,j,1] == 1:
+					histGreen[imgCarre[i,j,1]] += 1
+#print(histGreen)
+		maxGreen = 0
+		iGreen = 0
+		for i in range(253):
+			if(histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3] > maxGreen):
+				maxGreen = histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3]
+				iGreen = i
+			print(histGreen[i])
+		print(maxGreen, iGreen)
+
 
 		print("BLEU :")
-		for i in range(imgColors.shape[0]):
-			for j in range(imgColors.shape[1]):
-				histBlue[imgColors[i,j,2]] += 1
-		for i, val in enumerate(histBlue):
-			print(f"{i}: {val}")
-		plt.figure()
-		plt.imshow(imgColors)
-		plt.show()
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
+				if abs_sobel64f[i,j,2] == 1:	
+					histBlue[imgCarre[i,j,2]] += 1
+		maxBlue = 0
+		iBlue = 0
+#print(histBlue)
+		for i in range(253):
+			if(histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3] > maxBlue):
+				maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
+				iBlue = i
+			print(histBlue[i])
+		print(maxBlue, iBlue)
 	elif file.endswith(".png"):
 		print(file)
 		kernel = np.ones((5,5), np.uint8)
@@ -106,20 +139,19 @@ for file in dirs:
 			for j in range(circle.shape[1]):
 				if np.sqrt((center[0] - i)**2 + (center[1] - j)**2) <= diameter // 2:
 					circle[i, j] = 1
-		# plt.figure()
-		# plt.title("Elem struct")
-		# plt.imshow(circle)
+
 		img0 = mplimp.imread(path + file)
-		imgColors = mplimp.imread(path + file)
-		imgOpening = cv2.morphologyEx(img0, cv2.MORPH_OPEN, circle)
+		img1 = mplimp.imread(path + file)
+		imgBlurred = cv2.blur(img1,(17,17))
 		plt.figure()
-		plt.imshow(imgOpening)
+		plt.imshow(imgBlurred)
 		plt.show()
+		imgOpening = cv2.morphologyEx(img0, cv2.MORPH_OPEN, center)
 
 		sobelx64f = cv2.Sobel(imgOpening,cv2.CV_64F,1,0,ksize=5)
 		abs_sobel64f = np.absolute(sobelx64f)
-		sobel_8u = np.uint8(abs_sobel64f)
 
+				
 		imgN = np.zeros(abs_sobel64f.shape)
 		for i in range(abs_sobel64f.shape[0]) :
 			for j in range(abs_sobel64f.shape[1]) :
@@ -129,10 +161,13 @@ for file in dirs:
 					imgN[i,j,1] = 255
 				if abs_sobel64f[i,j,2] > 120:
 					imgN[i,j,2] = 255
+		# plt.figure()
+		# plt.imshow(imgN)
+		# plt.show()
 
 		x = 0
 		y = 0
-		c = 0
+		c = 1
 		for i in range(imgN.shape[0]) :
 			for j in range(imgN.shape[1]) :
 				if imgN[i,j,0] == 255:
@@ -153,37 +188,68 @@ for file in dirs:
 		print(moy_x)
 		print(moy_y)
 
-		r = imgColors[moy_x,moy_y,0] * 1.0
-		g = imgColors[moy_x,moy_y,1] * 1.0
-		b = imgColors[moy_x,moy_y,2] * 1.0
-		print(r,"and",g,"and",b)
+		imgCarre = np.zeros((imgBlurred.shape[0]//25, imgBlurred.shape[1]//25), dtype = np.uint8)
+		imgCarre[imgCarre.shape[0]//2,imgCarre.shape[1]//2] = 255
+		imgCarre = imgBlurred[(moy_x - imgCarre.shape[0]):(moy_x + imgCarre.shape[0]),(moy_y - imgCarre.shape[1]):(moy_y + imgCarre.shape[1])]
+		plt.figure()
+		plt.imshow(imgCarre)
+		plt.show()
 
-		somme = 0
+		# r = imgCarre[moy_x,moy_y,0] * 1.0
+		# g = imgBlurred[moy_x,moy_y,1] * 1.0
+		# b = imgBlurred[moy_x,moy_y,2] * 1.0
+		# print(r,"and",g,"and",b)
+
 		histRed = [0] * 256
 		histGreen = [0] * 256
 		histBlue = [0] * 256
-		for i in range(imgColors.shape[0]):
-			for j in range(imgColors.shape[1]):
-				histRed[imgColors[i,j,0]] += 1
-		for i, val in enumerate(histRed):
-			print(f"{i}: {val}")
+
+		print("ROUGE :")
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
+				if abs_sobel64f[i,j,0] == 1:
+					histRed[imgCarre[i,j,0]] += 1
+#print(histRed)
+		maxRed = 0
+		iRed = 0
+		for i in range(253):
+			if(histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3] > maxRed):
+				maxRed = histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3]
+				iRed = i
+			print(histRed[i])
+		print(maxRed, iRed)
+
 
 		print("VERT :")
-		for i in range(imgColors.shape[0]):
-			for j in range(imgColors.shape[1]):
-				histGreen[imgColors[i,j,1]] += 1
-		for i, val in enumerate(histGreen):
-			print(f"{i}: {val}")
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
+				if abs_sobel64f[i,j,1] == 1:
+					histGreen[imgCarre[i,j,1]] += 1
+#print(histGreen)
+		maxGreen = 0
+		iGreen = 0
+		for i in range(253):
+			if(histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3] > maxGreen):
+				maxGreen = histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3]
+				iGreen = i
+			print(histGreen[i])
+		print(maxGreen, iGreen)
+
 
 		print("BLEU :")
-		for i in range(imgColors.shape[0]):
-			for j in range(imgColors.shape[1]):
-				histBlue[imgColors[i,j,2]] += 1
-		for i, val in enumerate(histBlue):
-			print(f"{i}: {val}")
-		plt.figure()
-		plt.imshow(imgColors)
-		plt.show()
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
+				if abs_sobel64f[i,j,2] == 1:	
+					histBlue[imgCarre[i,j,2]] += 1
+		maxBlue = 0
+		iBlue = 0
+#print(histBlue)
+		for i in range(253):
+			if(histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3] > maxBlue):
+				maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
+				iBlue = i
+			print(histBlue[i])
+		print(maxBlue, iBlue)
 	elif file.endswith(".jpg"):
 		print(file)
 		kernel = np.ones((5,5), np.uint8)
@@ -194,19 +260,19 @@ for file in dirs:
 			for j in range(circle.shape[1]):
 				if np.sqrt((center[0] - i)**2 + (center[1] - j)**2) <= diameter // 2:
 					circle[i, j] = 1
-		# plt.figure()
-		# plt.title("Elem struct")
-		# plt.imshow(circle)
+
 		img0 = mplimp.imread(path + file)
-		imgColors = mplimp.imread(path + file)
+		img1 = mplimp.imread(path + file)
+		imgBlurred = cv2.blur(img1,(17,17))
+		plt.figure()
+		plt.imshow(imgBlurred)
+		plt.show()
 		imgOpening = cv2.morphologyEx(img0, cv2.MORPH_OPEN, center)
-		# plt.figure()
-		# plt.imshow(imgOpening)
-		# plt.show()
 
 		sobelx64f = cv2.Sobel(imgOpening,cv2.CV_64F,1,0,ksize=5)
 		abs_sobel64f = np.absolute(sobelx64f)
 
+				
 		imgN = np.zeros(abs_sobel64f.shape)
 		for i in range(abs_sobel64f.shape[0]) :
 			for j in range(abs_sobel64f.shape[1]) :
@@ -216,13 +282,13 @@ for file in dirs:
 					imgN[i,j,1] = 255
 				if abs_sobel64f[i,j,2] > 120:
 					imgN[i,j,2] = 255
-		plt.figure()
-		plt.imshow(imgN)
-		plt.show()
+		# plt.figure()
+		# plt.imshow(imgN)
+		# plt.show()
 
 		x = 0
 		y = 0
-		c = 0
+		c = 1
 		for i in range(imgN.shape[0]) :
 			for j in range(imgN.shape[1]) :
 				if imgN[i,j,0] == 255:
@@ -243,92 +309,64 @@ for file in dirs:
 		print(moy_x)
 		print(moy_y)
 
-		r = imgColors[moy_x,moy_y,0] * 1.0
-		g = imgColors[moy_x,moy_y,1] * 1.0
-		b = imgColors[moy_x,moy_y,2] * 1.0
-		print(r,"and",g,"and",b)
+		imgCarre = np.zeros((imgBlurred.shape[0]//25, imgBlurred.shape[1]//25), dtype = np.uint8)
+		imgCarre[imgCarre.shape[0]//2,imgCarre.shape[1]//2] = 255
+		imgCarre = imgBlurred[(moy_x - imgCarre.shape[0]):(moy_x + imgCarre.shape[0]),(moy_y - imgCarre.shape[1]):(moy_y + imgCarre.shape[1])]
+		plt.figure()
+		plt.imshow(imgCarre)
+		plt.show()
 
-		xResolution = 0
-		yResolution = 0
-		xFond = 0
-		yFond = 0
-		redXMoyFond = 0
-		greenXMoyFond = 0
-		blueXMoyFond = 0
-		redYMoyFond = 0
-		greenYMoyFond = 0
-		blueYMoyFond = 0
-		for i in range(imgColors.shape[0]):
-			xResolution += 1
-		for i in range(imgColors.shape[1]):
-			yResolution += 1
-		xFond = xResolution // 100
-		yFond = yResolution // 100
-		for i in range(xFond, (imgColors.shape[0] - xFond)):
-			redXMoyFond += imgColors[i, yFond, 0]
-			greenXMoyFond += imgColors[i, yFond, 1]
-			blueXMoyFond += imgColors[i, yFond, 2]
-		for j in range(yFond, (imgColors.shape[1] - yFond)):
-			redYMoyFond += imgColors[xFond, j, 0]
-			greenYMoyFond += imgColors[xFond, j, 1]
-			blueYMoyFond += imgColors[xFond, j, 2]
-		redXMoyFond = redXMoyFond // xResolution
-		greenXMoyFond = greenXMoyFond // xResolution
-		blueXMoyFond = blueXMoyFond // xResolution
-		redYMoyFond = redYMoyFond // yResolution
-		greenYMoyFond = greenYMoyFond // yResolution
-		blueYMoyFond = blueYMoyFond // yResolution
-		print("redXMoyFond : ", redXMoyFond)
-		print("greenXMoyFond : ", greenXMoyFond)
-		print("blueXMoyFond : ", blueXMoyFond)
-		print("redYMoyFond : ", redYMoyFond)
-		print("greenYMoyFond : ", greenYMoyFond)
-		print("blueYMoyFond : ", blueYMoyFond)
+		# r = imgCarre[moy_x,moy_y,0] * 1.0
+		# g = imgBlurred[moy_x,moy_y,1] * 1.0
+		# b = imgBlurred[moy_x,moy_y,2] * 1.0
+		# print(r,"and",g,"and",b)
 
 		histRed = [0] * 256
 		histGreen = [0] * 256
 		histBlue = [0] * 256
 
-		for i in range(imgN.shape[0]):
-			for j in range(imgN.shape[1]):
-				if imgColors[i, j, 0] >= (redXMoyFond - 10) and imgColors[i, j, 0] <= (redXMoyFond + 10):
-					abs_sobel64f[i, j, 0] = 0
-				if imgColors[i, j, 0] >= (greenXMoyFond - 10) and imgColors[i, j, 0] <= (greenXMoyFond + 10):
-					abs_sobel64f[i, j, 0] = 0
-				if imgColors[i, j, 0] >= (blueXMoyFond - 10) and imgColors[i, j, 0] <= (blueXMoyFond + 10):
-					abs_sobel64f[i, j, 0] = 0
-				if imgColors[i, j, 0] >= (redYMoyFond - 10) and imgColors[i, j, 0] <= (redYMoyFond + 10):
-					abs_sobel64f[i, j, 0] = 0
-				if imgColors[i, j, 0] >= (greenYMoyFond - 10) and imgColors[i, j, 0] <= (greenYMoyFond + 10):
-					abs_sobel64f[i, j, 0] = 0
-				if imgColors[i, j, 0] >= (blueYMoyFond - 10) and imgColors[i, j, 0] <= (blueYMoyFond + 10):
-					abs_sobel64f[i, j, 0] = 0
-		plt.figure()
-		plt.imshow(imgN)
-		plt.show()
 		print("ROUGE :")
-		for i in range(imgN.shape[0]):
-			for j in range(imgN.shape[1]):
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
 				if abs_sobel64f[i,j,0] == 1:
-					histRed[imgColors[i,j,0]] += 1
-		for i, val in enumerate(histRed):
-			print(f"{i}: {val}")
+					histRed[imgCarre[i,j,0]] += 1
+		#print(histRed)
+		maxRed = 0
+		iRed = 0
+		for i in range(253):
+			if(histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3] > maxRed):
+				maxRed = histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3]
+				iRed = i
+			print(histRed[i])
+		print(maxRed, iRed)
+
 
 		print("VERT :")
-		for i in range(imgN.shape[0]):
-			for j in range(imgN.shape[1]):
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
 				if abs_sobel64f[i,j,1] == 1:
-					histGreen[imgColors[i,j,1]] += 1
-		for i, val in enumerate(histGreen):
-			print(f"{i}: {val}")
+					histGreen[imgCarre[i,j,1]] += 1
+		#print(histGreen)
+		maxGreen = 0
+		iGreen = 0
+		for i in range(253):
+			if(histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3] > maxGreen):
+				maxGreen = histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3]
+				iGreen = i
+			print(histGreen[i])
+		print(maxGreen, iGreen)
+
 
 		print("BLEU :")
-		for i in range(imgN.shape[0]):
-			for j in range(imgN.shape[1]):
+		for i in range(imgCarre.shape[0]):
+			for j in range(imgCarre.shape[1]):
 				if abs_sobel64f[i,j,2] == 1:	
-					histBlue[imgColors[i,j,2]] += 1
-		for i, val in enumerate(histBlue):
-			print(f"{i}: {val}")
-		plt.figure()
-		plt.imshow(imgColors)
-		plt.show()
+					histBlue[imgCarre[i,j,2]] += 1
+		maxBlue = 0
+		iBlue = 0
+		for i in range(253):
+			if(histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3] > maxBlue):
+				maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
+				iBlue = i
+			print(histBlue[i])
+		print(maxBlue, iBlue)
