@@ -80,13 +80,14 @@ for i in range(imgCarre.shape[0]):
     for j in range(imgCarre.shape[1]):
         if abs_sobel64f[i,j,0] == 1:
             histRed[imgCarre[i,j,0]] += 1
-print(histRed)
+#print(histRed)
 maxRed = 0
 iRed = 0
 for i in range(253):
     if(histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3] > maxRed):
         maxRed = histRed[i] + histRed[i+1] + histRed[i+2] + histRed[i+3]
         iRed = i
+    # print(i, ": ", histRed[i])
 print(maxRed, iRed)
 
 
@@ -95,13 +96,14 @@ for i in range(imgCarre.shape[0]):
     for j in range(imgCarre.shape[1]):
         if abs_sobel64f[i,j,1] == 1:
             histGreen[imgCarre[i,j,1]] += 1
-print(histGreen)
+#print(histGreen)
 maxGreen = 0
 iGreen = 0
 for i in range(253):
     if(histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3] > maxGreen):
         maxGreen = histGreen[i] + histGreen[i+1] + histGreen[i+2] + histGreen[i+3]
         iGreen = i
+    # print(i, ": ", histGreen[i])
 print(maxGreen, iGreen)
 
 
@@ -112,10 +114,19 @@ for i in range(imgCarre.shape[0]):
             histBlue[imgCarre[i,j,2]] += 1
 maxBlue = 0
 iBlue = 0
-print(histBlue)
 for i in range(253):
     if(histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3] > maxBlue):
         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
         iBlue = i
+    # print(i, ": ", histBlue[i])
 print(maxBlue, iBlue)
+
+if(iBlue - 50 < 0):
+    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+elif(iGreen - 0 < 0 and iBlue - 50 < 0):
+    print("Rouge : 0,01 0,02 0,05 centimes")
+elif(iRed - iGreen - iBlue < 0):
+    print("Gris : 1 euros")
+else:
+    print("erreur")
 
