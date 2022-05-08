@@ -5,14 +5,11 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mplimp 
 def main(argv):
     
-    default_file = 'DecoupageDonnees/Traitement/6.jpg'
+    default_file = 'DecoupageDonnees/Traitement/0.jpeg'
     filename = argv[0] if len(argv) > 0 else default_file
     # Loads an image
     src = cv.imread(cv.samples.findFile(filename), cv.IMREAD_COLOR)
     src1 = cv.cvtColor(src,cv.COLOR_BGR2RGB)
-    plt.figure()
-    plt.imshow(src1)
-    plt.show()
     # Check if image is loaded fine
     if src is None:
         print ('Error opening image!')
@@ -24,8 +21,8 @@ def main(argv):
     
     
     
-    if src.shape[0]*src.shape[1] >= 12000000 :
-        
+    if src.shape[0]*src.shape[1] >= 9000000 :
+        print(1)
         gray = cv.medianBlur(gray, 17
                          )
         rows = gray.shape[0]
@@ -34,7 +31,8 @@ def main(argv):
                                minRadius=100, maxRadius=500                               
                                
                                )
-    elif src.shape[0]*src.shape[1] >= 2000000 and src.shape[0]*src.shape[1] < 12000000 :
+    elif src.shape[0]*src.shape[1] >= 2000000 and src.shape[0]*src.shape[1] < 9000000 :
+        print(2)
         gray = cv.medianBlur(gray, 7
                          )
         rows = gray.shape[0]
@@ -44,6 +42,7 @@ def main(argv):
                                
                                )
     elif src.shape[0]*src.shape[1] < 2000000 :
+        print(3)
         gray = cv.medianBlur(gray, 7
                          )
         rows = gray.shape[0]
@@ -63,12 +62,15 @@ def main(argv):
                 for y in range(imgz.shape[1]) :
                     print(src[(i[1]-imgz.shape[0]//2)+x,(i[0]-imgz.shape[1]//2)-y,0])
 
-            print(i[0],i[1])
+            print(i[0],i[1],i[2])
             
             # circle center
             cv.circle(src, center, 1, (0, 100, 100), 3)
             # circle outline
             radius = i[2]
+            for x in range(imgz.shape[0]//8) :
+                for y in range(imgz.shape[1]//16) :
+                    print(src[(i[1]-i[2]-x),(i[0]-y)])
             cv.circle(src, center, radius, (255, 0, 255), 3)
     
     
