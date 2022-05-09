@@ -252,6 +252,13 @@ for file in dirs:
 					imgN[i,j,1] = 255
 				if abs_sobel64f[i,j,2] > 120:
 					imgN[i,j,2] = 255
+		plt.figure()
+		plt.imshow(img1)
+		plt.show()
+		plt.figure()
+		plt.imshow(imgN)
+		plt.show()
+
 
 		x = 0
 		y = 0
