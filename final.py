@@ -178,10 +178,9 @@ for file in dirs:
                     tabcoin.append(piece)
                 else :
                     tabcoin.append(couleur)
-                for x in data :
-                    
-                    
+                for x in data :                                 
                     value = x['label']
+                    countP = countP + 1
                     if value == "0.50E" or value == "0.20E" or value == "0.10E" :
                         tablab.append("Jaune")    
                     elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
@@ -210,7 +209,7 @@ for file in dirs:
 
         
     elif file.endswith(".png"):
-        count = count + 1
+        countI = countI + 1
         s = file.split(".")[0]
         with open("DecoupageDonnees/JSON/"+s+".json") as jsonFile:
             jsonObject = json.load(jsonFile)
@@ -370,6 +369,7 @@ for file in dirs:
                 
                 for x in data :
                     value = x['label']
+                    countP = countP + 1
                     if value == "0.50E" or value == "0.20E" or value == "0.10E" :
                         tablab.append("Jaune")    
                     elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
@@ -388,7 +388,7 @@ for file in dirs:
                                 find = True
                     
     elif file.endswith(".jpg"):
-        count = count + 1
+        countI = countI + 1
         s = file.split(".")[0]
         with open("DecoupageDonnees/JSON/"+s+".json") as jsonFile:
             jsonObject = json.load(jsonFile)
@@ -547,6 +547,7 @@ for file in dirs:
                 cv2.waitKey(0)
                 for x in data :
                     value = x['label']
+                    countP = countP + 1
                     if value == "0.50E" or value == "0.20E" or value == "0.10E" :
                         tablab.append("Jaune")    
                     elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
@@ -563,8 +564,13 @@ for file in dirs:
                                 finalP = finalP + 1
                                 tablab.pop(j)
                                 find = True
-Pourcentage = finalP / count 
+                    if len(labtab) == 0 :
+                        finalI = finalI + 1
+                        
+PourcentageP = finalP / countP 
+PourcentageI = finalI / countI
 
-print("Notre algorithme a un taux de réussite de " + Pourcentage + " %")
+print("Notre algorithme a un taux de réussite de " + PourcentageP + " % sur les pièces" \n)
+print("Et il a un taux de réussite de " + PourcentageI + " % sur les images" \n)
                     
                     
