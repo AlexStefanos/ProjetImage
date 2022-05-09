@@ -21,6 +21,8 @@ for file in dirs:
         histRed2 = [0] * 256
         histGreen2 = [0] * 256
         histBlue2 = [0] * 256
+        couleur = ""
+        piece = ""
         # Check if image is loaded fine
         if src is None:
             print('Error opening image!')
@@ -88,6 +90,7 @@ for file in dirs:
                 print(maxBlue, iBlue)
                 if(iBlue - 50 < 0):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    couleur = "Jaune"
                     radius = c[2]
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -124,10 +127,13 @@ for file in dirs:
                     print(maxBlue2, iBlue2)
                     if((iRed2 - iGreen2 < 10) and (iGreen2 - iBlue2 < 10) and (iRed2 != 0) and (iGreen2 != 0) and(iBlue2 != 0)):
                         print("Il y a du gris : 2 euros")
+                        piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
                     print("Rouge : 0,01 0,02 0,05 centimes")
+                    couleur = "Rouge"
                 elif((iRed - iGreen < 10) and (iGreen - iBlue < 10)):
                     print("Gris : 1 euros")
+                    piece = "1.00E"
                 else:
                     print("erreur")
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
@@ -147,6 +153,8 @@ for file in dirs:
         histRed2 = [0] * 256
         histGreen2 = [0] * 256
         histBlue2 = [0] * 256
+        couleur = ""
+        piece = ""
         # Check if image is loaded fine
         if src is None:
             print('Error opening image!')
@@ -214,6 +222,7 @@ for file in dirs:
                 print(maxBlue, iBlue)
                 if(iBlue - 50 < 0):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    couleur = "Jaune"
                     radius = c[2]
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -250,10 +259,13 @@ for file in dirs:
                     print(maxBlue2, iBlue2)
                     if((iRed2 - iGreen2 < 10) and (iGreen2 - iBlue2 < 10) and (iRed2 != 0) and (iGreen2 != 0) and(iBlue2 != 0)):
                         print("Il y a du gris : 2 euros")
+                        piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
                     print("Rouge : 0,01 0,02 0,05 centimes")
+                    couleur = "Rouge"
                 elif((iRed - iGreen < 10) and (iGreen - iBlue < 10)):
                     print("Gris : 1 euros")
+                    piece = "1.00E"
                 else:
                     print("erreur")
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
@@ -273,6 +285,8 @@ for file in dirs:
         histRed2 = [0] * 256
         histGreen2 = [0] * 256
         histBlue2 = [0] * 256
+        couleur = ""
+        piece = ""
         # Check if image is loaded fine
         if src is None:
             print('Error opening image!')
@@ -340,6 +354,7 @@ for file in dirs:
                 print(maxBlue, iBlue)
                 if(iBlue - 50 < 0):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    couleur = "Jaune"
                     radius = c[2]
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -376,10 +391,13 @@ for file in dirs:
                     print(maxBlue2, iBlue2)
                     if((iRed2 - iGreen2 < 10) and (iGreen2 - iBlue2 < 10) and (iRed2 != 0) and (iGreen2 != 0) and(iBlue2 != 0)):
                         print("Il y a du gris : 2 euros")
+                        piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
                     print("Rouge : 0,01 0,02 0,05 centimes")
+                    couleur = "Rouge"
                 elif((iRed - iGreen < 10) and (iGreen - iBlue < 10)):
                     print("Gris : 1 euros")
+                    piece = "1.00E"
                 else:
                     print("erreur")
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
