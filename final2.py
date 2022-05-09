@@ -6,8 +6,11 @@ import os
 
 path = "DecoupageDonnees/Traitement/"
 dirs = os.listdir(path)
+count = 0
+final = 0
 for file in dirs:
 	if file.endswith(".jpeg"):
+		count = count + 1
 		print(file)
 		kernel = np.ones((5,5), np.uint8)
 		diameter = 11
@@ -115,7 +118,36 @@ for file in dirs:
 		else:
 			print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
 			couleur = "Jaune"
+			
+			
+			
+		tablab = []
+                for x in data :                                 
+                    value = x['label']
+                    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                        tablab.append("Jaune")    
+                    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                        tablab.append("Rouge")
+                    else :
+                        tablab.append(value)
+                
+                
+               
+	    	for i in range(len(tablab)) :
+			find = False 
+		   	while (find == False) :
+				if piece != "" :
+					if piece == tablab[i] :
+						final = final + 1
+						find = True
+				else :
+					if couleur == tablab[i] :
+						final = final + 1
+						find = True
+						
+						
 	elif file.endswith(".png"):
+		count = count + 1
 		print(file)
 		kernel = np.ones((5,5), np.uint8)
 		diameter = 11
@@ -223,7 +255,34 @@ for file in dirs:
 		else:
 			print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
 			couleur = "Jaune"
+			
+		tablab = []
+                for x in data :                                 
+                    value = x['label']
+                    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                        tablab.append("Jaune")    
+                    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                        tablab.append("Rouge")
+                    else :
+                        tablab.append(value)
+                
+                
+               
+	    	for i in range(len(tablab)) :
+			find = False 
+		   	while (find == False) :
+				if piece != "" :
+					if piece == tablab[i] :
+						final = final + 1
+						find = True
+				else :
+					if couleur == tablab[i] :
+						final = final + 1
+						find = True
+				
+		
 	elif file.endswith(".jpg"):
+		count = count + 1
 		print(file)
 		kernel = np.ones((5,5), np.uint8)
 		diameter = 11
@@ -337,3 +396,31 @@ for file in dirs:
 		else:
 			print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
 			couleur = "Jaune"
+			
+		tablab = []
+                for x in data :                                 
+                    value = x['label']
+                    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                        tablab.append("Jaune")    
+                    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                        tablab.append("Rouge")
+                    else :
+                        tablab.append(value)
+                
+                
+               
+	    	for i in range(len(tablab)) :
+			find = False 
+		   	while (find == False) :
+				if piece != "" :
+					if piece == tablab[i] :
+						final = final + 1
+						find = True
+				else :
+					if couleur == tablab[i] :
+						final = final + 1
+						find = True
+						
+					
+Pourcentage = final / count						
+print("Et il a un taux de réussite de " + Pourcentage + " % sur les images\n")
