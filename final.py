@@ -10,10 +10,10 @@ for file in dirs:
     if file.endswith(".jpeg"):
         print(file)
         # Loads an image
-        src = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
-        src1 = cv2.cvtColor(src,cv2.COLOR_BGR2RGB)
+        src1 = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
+        src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
         plt.figure()
-        plt.imshow(src1)
+        plt.imshow(src)
         plt.show()
         histRed = [0] * 256
         histGreen = [0] * 256
@@ -86,7 +86,7 @@ for file in dirs:
                         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
                         iBlue = i
                 print(maxBlue, iBlue)
-                if(iBlue < 50):
+                if(iBlue < 75):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
@@ -134,10 +134,10 @@ for file in dirs:
     elif file.endswith(".png"):
         print(file)
         # Loads an image
-        src = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
-        src1 = cv2.cvtColor(src,cv2.COLOR_BGR2RGB)
+        src1 = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
+        src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
         plt.figure()
-        plt.imshow(src1)
+        plt.imshow(src)
         plt.show()
         histRed = [0] * 256
         histGreen = [0] * 256
@@ -210,7 +210,7 @@ for file in dirs:
                         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
                         iBlue = i
                 print(maxBlue, iBlue)
-                if(iBlue < 50):
+                if(iBlue < 75):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
@@ -255,12 +255,13 @@ for file in dirs:
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 cv2.imshow("detected circles", src)
                 cv2.waitKey(0)
+    elif file.endswith(".jpg"):
         print(file)
         # Loads an image
-        src = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
-        src1 = cv2.cvtColor(src,cv2.COLOR_BGR2RGB)
+        src1 = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
+        src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
         plt.figure()
-        plt.imshow(src1)
+        plt.imshow(src)
         plt.show()
         histRed = [0] * 256
         histGreen = [0] * 256
@@ -333,7 +334,7 @@ for file in dirs:
                         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
                         iBlue = i
                 print(maxBlue, iBlue)
-                if(iBlue < 50):
+                if(iBlue < 75):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
