@@ -59,6 +59,7 @@ for file in dirs:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
             for c in circles[0, :]:
+                piece = ""
                 radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
@@ -166,22 +167,25 @@ for file in dirs:
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
                         #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
-                cv2.circle(src, center, radius, (255, 0, 255), 3)
-                cv2.imshow("detected circles", src)
+                cv2.circle(src1, center, radius, (255, 0, 255), 3)
+                cv2.imshow(file, src1)
                 cv2.waitKey(0)
                 
                 for x in data :
+                    
                     value = x['label']
                     if piece != "" : 
                         if piece == "2.00E" and piece == value :
                             win = win + 1
                             piece = "C'est une pièce de 2 euros"
                             print(piece)
+                            print("A1")
                         elif piece == value :
                             win = win + 1
                             piece = "C'est une pièce d'1 euro"
                             print(piece)
-
+                            print("A2")
+                        print("A")
                     elif couleur == "Jaune" :
                         piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
                         print(piece)
@@ -193,7 +197,7 @@ for file in dirs:
 
                         elif value == "0.10E" :
                             win = win + 1
-
+                        print("B")
                     elif couleur == "Rouge" :
                         piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
                         print(piece)
@@ -205,7 +209,7 @@ for file in dirs:
 
                         elif value == "0.01E" :
                             win = win + 1
-
+                        print("C")
                 if win >= 1 :
                     final = final + 1
                     win = 0
@@ -258,6 +262,7 @@ for file in dirs:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
             for c in circles[0, :]:
+                piece = ""
                 radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
@@ -365,8 +370,8 @@ for file in dirs:
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
                         #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
-                cv2.circle(src, center, radius, (255, 0, 255), 3)
-                cv2.imshow("detected circles", src)
+                cv2.circle(src1, center, radius, (255, 0, 255), 3)
+                cv2.imshow(file, src1)
                 cv2.waitKey(0)
                 
                 for x in data :
@@ -380,7 +385,7 @@ for file in dirs:
                             win = win + 1
                             piece = "C'est une pièce d'1 euro"
                             print(piece)
-
+                        print("A")
                     elif couleur == "Jaune" :
                         piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
                         print(piece)
@@ -392,7 +397,7 @@ for file in dirs:
 
                         elif value == "0.10E" :
                             win = win + 1
-
+                        print("B")
                     elif couleur == "Rouge" :
                         piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
                         print(piece)
@@ -404,6 +409,7 @@ for file in dirs:
 
                         elif value == "0.01E" :
                             win = win + 1
+                        print("C")
 
                 if win >= 1 :
                     final = final + 1
@@ -456,6 +462,7 @@ for file in dirs:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
             for c in circles[0, :]:
+                piece = ""
                 radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
@@ -563,8 +570,8 @@ for file in dirs:
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
                         #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
-                cv2.circle(src, center, radius, (255, 0, 255), 3)
-                cv2.imshow("detected circles", src)
+                cv2.circle(src1, center, radius, (255, 0, 255), 3)
+                cv2.imshow(file, src1)
                 cv2.waitKey(0)
                 for x in data :
                     value = x['label']
@@ -577,7 +584,8 @@ for file in dirs:
                             win = win + 1
                             piece = "C'est une pièce d'1 euro"
                             print(piece)
-
+                        print(piece)
+                        
                     elif couleur == "Jaune" :
                         piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
                         print(piece)
@@ -589,6 +597,7 @@ for file in dirs:
 
                         elif value == "0.10E" :
                             win = win + 1
+                        print("B")
 
                     elif couleur == "Rouge" :
                         piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
@@ -601,7 +610,7 @@ for file in dirs:
 
                         elif value == "0.01E" :
                             win = win + 1
-
+                        print("C")
                 if win >= 1 :
                     final = final + 1
                     win = 0
