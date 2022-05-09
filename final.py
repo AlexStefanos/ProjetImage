@@ -3,11 +3,23 @@ import cv2
 import matplotlib.image as mplimp
 import matplotlib.pyplot as plt
 import os
+import json
 
 path = "DecoupageDonnees/Traitement/"
 dirs = os.listdir(path)
+count = 0
+win = 0
+final = 0
 for file in dirs:
     if file.endswith(".jpeg"):
+        count = count + 1
+        s = file.split(".")[0]
+        with open(s.json) as jsonFile:
+        jsonObject = json.load(jsonFile)
+        jsonFile.close()
+    
+        data = jsonObject['shapes']
+        
         print(file)
         src1 = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
         src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
@@ -157,8 +169,53 @@ for file in dirs:
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 # cv2.imshow("detected circles", src)
                 # cv2.waitKey(0)
+                
+                for x in data :
+                    value = x['label']
+                    if piece != "" : 
+                        if piece == "2.00E" and piece == value :
+                            win = win + 1
+                            piece = "C'est une pièce de 2 euros"
+                        elif piece == value :
+                            win = win + 1
+                            piece = "C'est une pièce d'1 euro"
+
+                    elif couleur == "Jaune" :
+                        piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
+                        if value == "0.50E" :
+                            win = win + 1
+
+                        elif value == "0.20E" :
+                            win = win + 1
+
+                        elif value == "0.10E" :
+                            win = win + 1
+
+                    elif couleur == "Rouge" :
+                        piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
+                        if value == "0.05E" :
+                            win = win + 1
+
+                        elif value == "0.02E" :
+                            win = win + 1
+
+                        elif value == "0.01E" :
+                            win = win + 1
+
+                if win >= 1 :
+                    final = final + 1
+                    win = 0
+
+        
     elif file.endswith(".png"):
-        print(file)
+        count = count + 1
+        s = file.split(".")[0]
+        with open(s.json) as jsonFile:
+        jsonObject = json.load(jsonFile)
+        jsonFile.close()
+    
+        data = jsonObject['shapes']
+        
         src1 = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
         src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
         plt.figure()
@@ -307,8 +364,52 @@ for file in dirs:
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 # cv2.imshow("detected circles", src)
                 # cv2.waitKey(0)
+                
+                for x in data :
+                    value = x['label']
+                    if piece != "" : 
+                        if piece == "2.00E" and piece == value :
+                            win = win + 1
+                            piece = "C'est une pièce de 2 euros"
+                        elif piece == value :
+                            win = win + 1
+                            piece = "C'est une pièce d'1 euro"
+
+                    elif couleur == "Jaune" :
+                        piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
+                        if value == "0.50E" :
+                            win = win + 1
+
+                        elif value == "0.20E" :
+                            win = win + 1
+
+                        elif value == "0.10E" :
+                            win = win + 1
+
+                    elif couleur == "Rouge" :
+                        piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
+                        if value == "0.05E" :
+                            win = win + 1
+
+                        elif value == "0.02E" :
+                            win = win + 1
+
+                        elif value == "0.01E" :
+                            win = win + 1
+
+                if win >= 1 :
+                    final = final + 1
+                    win = 0
+                    
     elif file.endswith(".jpg"):
-        print(file)
+        count = count + 1
+        s = file.split(".")[0]
+        with open(s.json) as jsonFile:
+        jsonObject = json.load(jsonFile)
+        jsonFile.close()
+    
+        data = jsonObject['shapes']
+        
         src1 = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
         src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
         plt.figure()
@@ -457,3 +558,43 @@ for file in dirs:
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 # cv2.imshow("detected circles", src)
                 # cv2.waitKey(0)
+                for x in data :
+                    value = x['label']
+                    if piece != "" : 
+                        if piece == "2.00E" and piece == value :
+                            win = win + 1
+                            piece = "C'est une pièce de 2 euros"
+                        elif piece == value :
+                            win = win + 1
+                            piece = "C'est une pièce d'1 euro"
+
+                    elif couleur == "Jaune" :
+                        piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
+                        if value == "0.50E" :
+                            win = win + 1
+
+                        elif value == "0.20E" :
+                            win = win + 1
+
+                        elif value == "0.10E" :
+                            win = win + 1
+
+                    elif couleur == "Rouge" :
+                        piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
+                        if value == "0.05E" :
+                            win = win + 1
+
+                        elif value == "0.02E" :
+                            win = win + 1
+
+                        elif value == "0.01E" :
+                            win = win + 1
+
+                if win >= 1 :
+                    final = final + 1
+                    win = 0
+Pourcentage = final / count 
+
+print("Notre algorithme a un taux de réussite de " + Pourcentage + " %")
+                    
+                    
