@@ -54,16 +54,14 @@ for file in dirs:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
             for c in circles[0, :]:
+                radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
                     for y in range(imgz.shape[1]):
-                        print(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0])
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0] == 1):
-                            histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1] == 1):
-                            histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2] == 1):
-                            histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                        # print(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0])
+                        histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                        histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                        histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
                 print("ROUGE :")
                 maxRed = 0
                 iRed = 0
@@ -88,19 +86,15 @@ for file in dirs:
                         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
                         iBlue = i
                 print(maxBlue, iBlue)
-                if(iBlue - 50 < 0):
+                if(iBlue < 50):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
-                    radius = c[2]
                     for v in range(radius//8) :
                         for w in range(radius//16) :
-                            print(src[(c[1]-radius+v),(c[0]-w)])
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0] == 1):
-                                histRed2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1] == 1):
-                                histGreen2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2] == 1):
-                                histBlue2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                            # print(src[(c[1]-radius+v),(c[0]-w)])
+                            histRed2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                            histGreen2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                            histBlue2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
                     print("ROUGE2 :")
                     maxRed2 = 0
                     iRed2 = 0
@@ -125,17 +119,15 @@ for file in dirs:
                             maxBlue2 = histBlue2[i] + histBlue2[i+1] + histBlue2[i+2] + histBlue2[i+3]
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
-                    if((iRed2 - iGreen2 < 10) and (iGreen2 - iBlue2 < 10) and (iRed2 != 0) and (iGreen2 != 0) and(iBlue2 != 0)):
+                    if((iBlue2 - iGreen2 < 10)):
                         print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
                     print("Rouge : 0,01 0,02 0,05 centimes")
                     couleur = "Rouge"
-                elif((iRed - iGreen < 10) and (iGreen - iBlue < 10)):
+                else:
                     print("Gris : 1 euros")
                     piece = "1.00E"
-                else:
-                    print("erreur")
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 cv2.imshow("detected circles", src)
                 cv2.waitKey(0)
@@ -186,16 +178,14 @@ for file in dirs:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
             for c in circles[0, :]:
+                radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
                     for y in range(imgz.shape[1]):
-                        print(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0])
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0] == 1):
-                            histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1] == 1):
-                            histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2] == 1):
-                            histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                        # print(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0])
+                        histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                        histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                        histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
                 print("ROUGE :")
                 maxRed = 0
                 iRed = 0
@@ -220,19 +210,15 @@ for file in dirs:
                         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
                         iBlue = i
                 print(maxBlue, iBlue)
-                if(iBlue - 50 < 0):
+                if(iBlue < 50):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
-                    radius = c[2]
                     for v in range(radius//8) :
                         for w in range(radius//16) :
-                            print(src[(c[1]-radius+v),(c[0]-w)])
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0] == 1):
-                                histRed2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1] == 1):
-                                histGreen2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2] == 1):
-                                histBlue2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                            # print(src[(c[1]-radius+v),(c[0]-w)])
+                            histRed2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                            histGreen2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                            histBlue2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
                     print("ROUGE2 :")
                     maxRed2 = 0
                     iRed2 = 0
@@ -257,21 +243,18 @@ for file in dirs:
                             maxBlue2 = histBlue2[i] + histBlue2[i+1] + histBlue2[i+2] + histBlue2[i+3]
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
-                    if((iRed2 - iGreen2 < 10) and (iGreen2 - iBlue2 < 10) and (iRed2 != 0) and (iGreen2 != 0) and(iBlue2 != 0)):
+                    if((iBlue2 - iGreen2 < 10)):
                         print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
                     print("Rouge : 0,01 0,02 0,05 centimes")
                     couleur = "Rouge"
-                elif((iRed - iGreen < 10) and (iGreen - iBlue < 10)):
+                else:
                     print("Gris : 1 euros")
                     piece = "1.00E"
-                else:
-                    print("erreur")
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 cv2.imshow("detected circles", src)
                 cv2.waitKey(0)
-    elif file.endswith(".jpg"):
         print(file)
         # Loads an image
         src = cv2.imread(cv2.samples.findFile(path + file), cv2.IMREAD_COLOR)
@@ -318,16 +301,14 @@ for file in dirs:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
             for c in circles[0, :]:
+                radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
                     for y in range(imgz.shape[1]):
-                        print(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0])
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0] == 1):
-                            histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1] == 1):
-                            histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                        if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2] == 1):
-                            histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                        # print(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0])
+                        histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                        histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                        histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
                 print("ROUGE :")
                 maxRed = 0
                 iRed = 0
@@ -352,19 +333,15 @@ for file in dirs:
                         maxBlue = histBlue[i] + histBlue[i+1] + histBlue[i+2] + histBlue[i+3]
                         iBlue = i
                 print(maxBlue, iBlue)
-                if(iBlue - 50 < 0):
+                if(iBlue < 50):
                     print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
-                    radius = c[2]
                     for v in range(radius//8) :
                         for w in range(radius//16) :
-                            print(src[(c[1]-radius+v),(c[0]-w)])
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0] == 1):
-                                histRed2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1] == 1):
-                                histGreen2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                            if(src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2] == 1):
-                                histBlue2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                            # print(src[(c[1]-radius+v),(c[0]-w)])
+                            histRed2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                            histGreen2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                            histBlue2[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
                     print("ROUGE2 :")
                     maxRed2 = 0
                     iRed2 = 0
@@ -389,17 +366,15 @@ for file in dirs:
                             maxBlue2 = histBlue2[i] + histBlue2[i+1] + histBlue2[i+2] + histBlue2[i+3]
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
-                    if((iRed2 - iGreen2 < 10) and (iGreen2 - iBlue2 < 10) and (iRed2 != 0) and (iGreen2 != 0) and(iBlue2 != 0)):
+                    if((iBlue2 - iGreen2 < 10)):
                         print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
                     print("Rouge : 0,01 0,02 0,05 centimes")
                     couleur = "Rouge"
-                elif((iRed - iGreen < 10) and (iGreen - iBlue < 10)):
+                else:
                     print("Gris : 1 euros")
                     piece = "1.00E"
-                else:
-                    print("erreur")
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
                 cv2.imshow("detected circles", src)
                 cv2.waitKey(0)
