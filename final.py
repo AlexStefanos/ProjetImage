@@ -14,9 +14,9 @@ for file in dirs:
     if file.endswith(".jpeg"):
         count = count + 1
         s = file.split(".")[0]
-        with open(s.json) as jsonFile:
-        jsonObject = json.load(jsonFile)
-        jsonFile.close()
+        with open("DecoupageDonnees/JSON/"+s+".json") as jsonFile:
+            jsonObject = json.load(jsonFile)
+            jsonFile.close()
     
         data = jsonObject['shapes']
         
@@ -91,7 +91,7 @@ for file in dirs:
                         iBlue = i
                 print(maxBlue, iBlue)
                 if(iBlue < 75):
-                    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    #print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -123,16 +123,16 @@ for file in dirs:
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
-                        print("Il y a du gris : 2 euros")
+                        #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
-                    print("Rouge : 0,01 0,02 0,05 centimes")
+                    #print("Rouge : 0,01 0,02 0,05 centimes")
                     couleur = "Rouge"
                 elif((iRed+30) > iGreen) and (iGreen > (iRed-30)):
-                    print("Gris : 1 euros")
+                    #print("Gris : 1 euros")
                     piece = "1.00E"
                 else:
-                    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    #print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -164,11 +164,11 @@ for file in dirs:
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
-                        print("Il y a du gris : 2 euros")
+                        #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
-                # cv2.imshow("detected circles", src)
-                # cv2.waitKey(0)
+                cv2.imshow("detected circles", src)
+                cv2.waitKey(0)
                 
                 for x in data :
                     value = x['label']
@@ -176,12 +176,15 @@ for file in dirs:
                         if piece == "2.00E" and piece == value :
                             win = win + 1
                             piece = "C'est une pièce de 2 euros"
+                            print(piece)
                         elif piece == value :
                             win = win + 1
                             piece = "C'est une pièce d'1 euro"
+                            print(piece)
 
                     elif couleur == "Jaune" :
                         piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
+                        print(piece)
                         if value == "0.50E" :
                             win = win + 1
 
@@ -193,6 +196,7 @@ for file in dirs:
 
                     elif couleur == "Rouge" :
                         piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
+                        print(piece)
                         if value == "0.05E" :
                             win = win + 1
 
@@ -210,9 +214,9 @@ for file in dirs:
     elif file.endswith(".png"):
         count = count + 1
         s = file.split(".")[0]
-        with open(s.json) as jsonFile:
-        jsonObject = json.load(jsonFile)
-        jsonFile.close()
+        with open("DecoupageDonnees/JSON/"+s+".json") as jsonFile:
+            jsonObject = json.load(jsonFile)
+            jsonFile.close()
     
         data = jsonObject['shapes']
         
@@ -286,7 +290,7 @@ for file in dirs:
                         iBlue = i
                 print(maxBlue, iBlue)
                 if(iBlue < 75):
-                    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    #print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -321,13 +325,13 @@ for file in dirs:
                         print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
-                    print("Rouge : 0,01 0,02 0,05 centimes")
+                    #print("Rouge : 0,01 0,02 0,05 centimes")
                     couleur = "Rouge"
                 elif((iRed+30) > iGreen) and (iGreen > (iRed-30)):
-                    print("Gris : 1 euros")
+                    #print("Gris : 1 euros")
                     piece = "1.00E"
                 else:
-                    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    #print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -359,11 +363,11 @@ for file in dirs:
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
-                        print("Il y a du gris : 2 euros")
+                        #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
-                # cv2.imshow("detected circles", src)
-                # cv2.waitKey(0)
+                cv2.imshow("detected circles", src)
+                cv2.waitKey(0)
                 
                 for x in data :
                     value = x['label']
@@ -371,12 +375,15 @@ for file in dirs:
                         if piece == "2.00E" and piece == value :
                             win = win + 1
                             piece = "C'est une pièce de 2 euros"
+                            print(piece)
                         elif piece == value :
                             win = win + 1
                             piece = "C'est une pièce d'1 euro"
+                            print(piece)
 
                     elif couleur == "Jaune" :
                         piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
+                        print(piece)
                         if value == "0.50E" :
                             win = win + 1
 
@@ -388,6 +395,7 @@ for file in dirs:
 
                     elif couleur == "Rouge" :
                         piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
+                        print(piece)
                         if value == "0.05E" :
                             win = win + 1
 
@@ -404,9 +412,9 @@ for file in dirs:
     elif file.endswith(".jpg"):
         count = count + 1
         s = file.split(".")[0]
-        with open(s.json) as jsonFile:
-        jsonObject = json.load(jsonFile)
-        jsonFile.close()
+        with open("DecoupageDonnees/JSON/"+s+".json") as jsonFile:
+            jsonObject = json.load(jsonFile)
+            jsonFile.close()
     
         data = jsonObject['shapes']
         
@@ -480,7 +488,7 @@ for file in dirs:
                         iBlue = i
                 print(maxBlue, iBlue)
                 if(iBlue < 75):
-                    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    #print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -512,16 +520,16 @@ for file in dirs:
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
-                        print("Il y a du gris : 2 euros")
+                        #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 elif(iGreen - 50 < 0 and iBlue - 50 < 0):
-                    print("Rouge : 0,01 0,02 0,05 centimes")
+                    #print("Rouge : 0,01 0,02 0,05 centimes")
                     couleur = "Rouge"
                 elif((iRed+30) > iGreen) and (iGreen > (iRed-30)):
-                    print("Gris : 1 euros")
+                    #print("Gris : 1 euros")
                     piece = "1.00E"
                 else:
-                    print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
+                    #print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
                     couleur = "Jaune"
                     for v in range(radius//8) :
                         for w in range(radius//16) :
@@ -553,23 +561,26 @@ for file in dirs:
                             iBlue2 = i
                     print(maxBlue2, iBlue2)
                     if((iRed2+30) > iGreen2) and (iGreen2 > (iRed2-30)):
-                        print("Il y a du gris : 2 euros")
+                        #print("Il y a du gris : 2 euros")
                         piece = "2.00E"
                 cv2.circle(src, center, radius, (255, 0, 255), 3)
-                # cv2.imshow("detected circles", src)
-                # cv2.waitKey(0)
+                cv2.imshow("detected circles", src)
+                cv2.waitKey(0)
                 for x in data :
                     value = x['label']
                     if piece != "" : 
                         if piece == "2.00E" and piece == value :
                             win = win + 1
                             piece = "C'est une pièce de 2 euros"
+                            print(piece)
                         elif piece == value :
                             win = win + 1
                             piece = "C'est une pièce d'1 euro"
+                            print(piece)
 
                     elif couleur == "Jaune" :
                         piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
+                        print(piece)
                         if value == "0.50E" :
                             win = win + 1
 
@@ -581,6 +592,7 @@ for file in dirs:
 
                     elif couleur == "Rouge" :
                         piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
+                        print(piece)
                         if value == "0.05E" :
                             win = win + 1
 
