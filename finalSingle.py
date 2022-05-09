@@ -151,3 +151,31 @@ if circles is not None:
         cv2.circle(src, center, radius, (255, 0, 255), 3)
         # cv2.imshow("detected circles", src)
         # cv2.waitKey(0)
+        tablab = []
+        if piece != "" :
+            tabcoin.append(piece)
+        else :
+            tabcoin.append(couleur)
+        for x in data :                                 
+            value = x['label']
+            countP = countP + 1
+            if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                tablab.append("Jaune")    
+            elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                tablab.append("Rouge")
+            else :
+                tablab.append(value)
+
+
+        if len(tablab) == len(tabcoin) :
+            for i in range(len(tabcoin)) :
+                find = False
+                pop = 0
+                for j in range(len(tablab)) :
+                    if tabcoin[i] == tablab[j-pop] and find == False :
+                        final = final + 1
+                        tablab.pop(j-pop)
+                        pop = pop + 1 
+                        find = True
+      
+print(final + " bonnes pièces trouvées sur les " + len(tablab))
