@@ -7,12 +7,13 @@ import json
 
 path = "DecoupageDonnees/Traitement/"
 dirs = os.listdir(path)
-count = 0
-win = 0
-final = 0
+countI = 0
+countP = 0
+finalP = 0
+finalI = 0
 for file in dirs:
     if file.endswith(".jpeg"):
-        count = count + 1
+        countI = countI + 1
         s = file.split(".")[0]
         with open("DecoupageDonnees/JSON/"+s+".json") as jsonFile:
             jsonObject = json.load(jsonFile)
@@ -58,6 +59,7 @@ for file in dirs:
         if circles is not None:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
+            tabcoin = []
             for c in circles[0, :]:
                 piece = ""
                 radius = c[2]
@@ -171,48 +173,40 @@ for file in dirs:
                 cv2.imshow(file, src1)
                 cv2.waitKey(0)
                 
+                tablab = []
+                if piece != "" :
+                    tabcoin.append(piece)
+                else :
+                    tabcoin.append(couleur)
                 for x in data :
                     
+                    
                     value = x['label']
-                    if piece != "" : 
-                        if piece == "2.00E" and piece == value :
-                            win = win + 1
-                            piece = "C'est une pièce de 2 euros"
-                            print(piece)
-                            print("A1")
-                        elif piece == value :
-                            win = win + 1
-                            piece = "C'est une pièce d'1 euro"
-                            print(piece)
-                            print("A2")
-                        print("A")
-                    elif couleur == "Jaune" :
-                        piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
-                        print(piece)
-                        if value == "0.50E" :
-                            win = win + 1
-
-                        elif value == "0.20E" :
-                            win = win + 1
-
-                        elif value == "0.10E" :
-                            win = win + 1
-                        print("B")
-                    elif couleur == "Rouge" :
-                        piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
-                        print(piece)
-                        if value == "0.05E" :
-                            win = win + 1
-
-                        elif value == "0.02E" :
-                            win = win + 1
-
-                        elif value == "0.01E" :
-                            win = win + 1
-                        print("C")
-                if win >= 1 :
-                    final = final + 1
-                    win = 0
+                    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                        tablab.append("Jaune")    
+                    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                        tablab.append("Rouge")
+                    else :
+                        tablab.append(value)
+                
+                
+                if len(tablab) == len(tabcoin) :
+                    for i in range(len(tabcoin)) :
+                        find = False 
+                        for j in range(len(tablab)) :
+                            print(i)
+                            print(j)
+                            print(len(tabcoin))
+                            print(len(tablab))
+                            print(tabcoin[i])
+                            print(tablab[j])
+                            if tabcoin[i] == tablab[j] and find == False :
+                                finalP = finalP + 1
+                                tablab.pop(j)
+                                find = True
+                
+                    
+                        
 
         
     elif file.endswith(".png"):
@@ -376,44 +370,22 @@ for file in dirs:
                 
                 for x in data :
                     value = x['label']
-                    if piece != "" : 
-                        if piece == "2.00E" and piece == value :
-                            win = win + 1
-                            piece = "C'est une pièce de 2 euros"
-                            print(piece)
-                        elif piece == value :
-                            win = win + 1
-                            piece = "C'est une pièce d'1 euro"
-                            print(piece)
-                        print("A")
-                    elif couleur == "Jaune" :
-                        piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
-                        print(piece)
-                        if value == "0.50E" :
-                            win = win + 1
-
-                        elif value == "0.20E" :
-                            win = win + 1
-
-                        elif value == "0.10E" :
-                            win = win + 1
-                        print("B")
-                    elif couleur == "Rouge" :
-                        piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
-                        print(piece)
-                        if value == "0.05E" :
-                            win = win + 1
-
-                        elif value == "0.02E" :
-                            win = win + 1
-
-                        elif value == "0.01E" :
-                            win = win + 1
-                        print("C")
-
-                if win >= 1 :
-                    final = final + 1
-                    win = 0
+                    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                        tablab.append("Jaune")    
+                    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                        tablab.append("Rouge")
+                    else :
+                        tablab.append(value)
+                
+                
+                if len(tablab) == len(tabcoin) :
+                    for i in range(len(tabcoin)) :
+                        find = False 
+                        for j in range(len(tablab)) :
+                            if tabcoin[i] == tablab[j] and find == False :
+                                finalP = finalP + 1
+                                tablab.pop(j)
+                                find = True
                     
     elif file.endswith(".jpg"):
         count = count + 1
@@ -575,46 +547,23 @@ for file in dirs:
                 cv2.waitKey(0)
                 for x in data :
                     value = x['label']
-                    if piece != "" : 
-                        if piece == "2.00E" and piece == value :
-                            win = win + 1
-                            piece = "C'est une pièce de 2 euros"
-                            print(piece)
-                        elif piece == value :
-                            win = win + 1
-                            piece = "C'est une pièce d'1 euro"
-                            print(piece)
-                        print(piece)
-                        
-                    elif couleur == "Jaune" :
-                        piece = "C'est une pièce de 50 centimes, de 20 centimes, ou de 10 centimes"
-                        print(piece)
-                        if value == "0.50E" :
-                            win = win + 1
-
-                        elif value == "0.20E" :
-                            win = win + 1
-
-                        elif value == "0.10E" :
-                            win = win + 1
-                        print("B")
-
-                    elif couleur == "Rouge" :
-                        piece = "C'est une pièce de 5 centimes, de 2 centimes, ou d'1 centime"
-                        print(piece)
-                        if value == "0.05E" :
-                            win = win + 1
-
-                        elif value == "0.02E" :
-                            win = win + 1
-
-                        elif value == "0.01E" :
-                            win = win + 1
-                        print("C")
-                if win >= 1 :
-                    final = final + 1
-                    win = 0
-Pourcentage = final / count 
+                    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+                        tablab.append("Jaune")    
+                    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+                        tablab.append("Rouge")
+                    else :
+                        tablab.append(value)
+                
+                
+                if len(tablab) == len(tabcoin) :
+                    for i in range(len(tabcoin)) :
+                        find = False 
+                        for j in range(len(tablab)) :
+                            if tabcoin[i] == tablab[j] and find == False :
+                                finalP = finalP + 1
+                                tablab.pop(j)
+                                find = True
+Pourcentage = finalP / count 
 
 print("Notre algorithme a un taux de réussite de " + Pourcentage + " %")
                     
