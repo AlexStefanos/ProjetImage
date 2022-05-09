@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 import json
 
-path = "DecoupageDonnees/Traitement/"
+path = "DecoupageDonnees/Bug1/"
 dirs = os.listdir(path)
 countI = 0
 countP = 0
@@ -191,17 +191,20 @@ for file in dirs:
                 
                 if len(tablab) == len(tabcoin) :
                     for i in range(len(tabcoin)) :
-                        find = False 
+                        find = False
+                        pop = 0
                         for j in range(len(tablab)) :
                             print(i)
                             print(j)
                             print(len(tabcoin))
                             print(len(tablab))
                             print(tabcoin[i])
-                            print(tablab[j])
-                            if tabcoin[i] == tablab[j] and find == False :
+                            print(tablab[j-pop])
+                            if tabcoin[i] == tablab[j-pop] and find == False :
                                 finalP = finalP + 1
-                                tablab.pop(j)
+                                print("pop")
+                                tablab.pop(j-pop)
+                                pop = pop + 1 
                                 find = True
                 
                     
@@ -254,6 +257,7 @@ for file in dirs:
         if circles is not None:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
+            tabcoin =[]
             for c in circles[0, :]:
                 piece = ""
                 radius = c[2]
@@ -366,7 +370,7 @@ for file in dirs:
                 cv2.circle(src1, center, radius, (255, 0, 255), 3)
                 cv2.imshow(file, src1)
                 cv2.waitKey(0)
-                
+                tablab = []
                 for x in data :
                     value = x['label']
                     countP = countP + 1
@@ -378,13 +382,16 @@ for file in dirs:
                         tablab.append(value)
                 
                 
+                
                 if len(tablab) == len(tabcoin) :
                     for i in range(len(tabcoin)) :
-                        find = False 
+                        find = False
+                        pop = 0
                         for j in range(len(tablab)) :
-                            if tabcoin[i] == tablab[j] and find == False :
+                            if tabcoin[i] == tablab[j-pop] and find == False :
                                 finalP = finalP + 1
-                                tablab.pop(j)
+                                tablab.pop(j-pop)
+                                pop = pop + 1
                                 find = True
                     
     elif file.endswith(".jpg"):
@@ -433,15 +440,20 @@ for file in dirs:
         if circles is not None:
             circles = np.uint16(np.around(circles))
             imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
+            tabcoin = []
             for c in circles[0, :]:
                 piece = ""
                 radius = c[2]
                 center = (c[0], c[1])
                 for x in range(imgz.shape[0]):
                     for y in range(imgz.shape[1]):
-                        histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
-                        histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
-                        histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                        try :
+                            histRed[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,0]] += 1
+                            histGreen[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,1]] += 1
+                            histBlue[src[(c[1]-imgz.shape[0]//2)+x,(c[0]-imgz.shape[1]//2)-y,2]] += 1
+                        except IndexError :
+                            pass
+                            
                 print("ROUGE :")
                 maxRed = 0
                 iRed = 0
@@ -545,6 +557,7 @@ for file in dirs:
                 cv2.circle(src1, center, radius, (255, 0, 255), 3)
                 cv2.imshow(file, src1)
                 cv2.waitKey(0)
+                tablab = []
                 for x in data :
                     value = x['label']
                     countP = countP + 1
@@ -558,19 +571,21 @@ for file in dirs:
                 
                 if len(tablab) == len(tabcoin) :
                     for i in range(len(tabcoin)) :
-                        find = False 
+                        find = False
+                        pop = 0
                         for j in range(len(tablab)) :
-                            if tabcoin[i] == tablab[j] and find == False :
+                            if tabcoin[i] == tablab[j-pop] and find == False :
                                 finalP = finalP + 1
-                                tablab.pop(j)
+                                tablab.pop(j-pop)
+                                pop = pop +1
                                 find = True
-                    if len(labtab) == 0 :
+                    if len(tablab) == 0 :
                         finalI = finalI + 1
                         
 PourcentageP = finalP / countP 
 PourcentageI = finalI / countI
 
-print("Notre algorithme a un taux de réussite de " + PourcentageP + " % sur les pièces" \n)
-print("Et il a un taux de réussite de " + PourcentageI + " % sur les images" \n)
+print("Notre algorithme a un taux de réussite de ",PourcentageP," % sur les pièces \n")
+print("Et il a un taux de réussite de ",PourcentageI," % sur les images \n")
                     
                     
