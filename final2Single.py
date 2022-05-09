@@ -110,3 +110,37 @@ elif((iRed+30) > iGreen) and (iGreen > (iRed-30)):
 else:
 	print("Jaune : 0,10 0,20 0,50 centimes ou 2 euros")
 	couleur = "Jaune"
+	
+tablab = []
+	for x in data :                                 
+	    value = x['label']
+	    if value == "0.50E" or value == "0.20E" or value == "0.10E" :
+		tablab.append("Jaune")    
+	    elif value == "0.05E" or value == "0.02E" or value == "0.01E" :
+		tablab.append("Rouge")
+	    else :
+		tablab.append(value)
+
+
+
+	for i in range(len(tablab)) :
+		find = False 
+		while (find == False) :
+			if piece != "" :
+				if piece == tablab[i] :
+					find = True
+			else :
+				if couleur == tablab[i] :
+					find = True
+
+if find == True :
+	if pièce != "" :
+		print("La valeur de la pièce est : " + piece + "\n")
+	elif couleur == Jaune :
+		print("La valeur de la pièce est : 50, 20 ou 10 centimes \n)
+	else :
+		print("La valeur de la pièce est : 5, 2 ou 1 centimes \n)
+else : 
+	print("La valeur de la pièce n'a pas été trouvée")      
+		     
+	
