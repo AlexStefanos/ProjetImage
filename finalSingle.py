@@ -2,12 +2,21 @@ import numpy as np
 import cv2
 import matplotlib.image as mplimp
 import matplotlib.pyplot as plt
+import json
 
-src1 = cv2.imread(cv2.samples.findFile("DecoupageDonnees/Traitement/23.jpg"), cv2.IMREAD_COLOR)
+src1 = cv2.imread(cv2.samples.findFile("DecoupageDonnees/Test/59.jpeg"), cv2.IMREAD_COLOR)
 src = cv2.cvtColor(src1,cv2.COLOR_BGR2RGB)
-plt.figure()
-plt.imshow(src)
-plt.show()
+with open("DecoupageDonnees/JSON/59.json") as jsonFile:
+    jsonObject = json.load(jsonFile)
+    jsonFile.close()
+data = jsonObject['shapes']
+# plt.figure()
+# plt.imshow(src)
+# plt.show()
+countP = 0
+final = 0
+pop = 0
+tablab = []
 histRed = [0] * 256
 histGreen = [0] * 256
 histBlue = [0] * 256
@@ -40,6 +49,7 @@ elif src.shape[0]*src.shape[1] < 2000000 :
 if circles is not None:
     circles = np.uint16(np.around(circles))
     imgz = np.zeros((src.shape[0]//25, src.shape[1]//25), dtype = np.uint8)
+    tabcoin = []
     for c in circles[0, :]:
         radius = c[2]
         center = (c[0], c[1])
@@ -165,8 +175,6 @@ if circles is not None:
                 tablab.append("Rouge")
             else :
                 tablab.append(value)
-
-
         if len(tablab) == len(tabcoin) :
             for i in range(len(tabcoin)) :
                 find = False
@@ -177,5 +185,4 @@ if circles is not None:
                         tablab.pop(j-pop)
                         pop = pop + 1 
                         find = True
-      
-print(final + " bonnes pièces trouvées sur les " + len(tablab))
+print(final, "bonne(s) pièce(s) trouvée(s) sur", len(tablab))
